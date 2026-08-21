@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caraga Tourist Destinations - Family Interactive Web Map</title>
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="header-container">
+      <h1>Caraga Tourist Destinations</h1>
+      <p>An Interactive Web Map Guide for Family Trips across Caraga Region</p>
+      
+      <!-- Location Input & Search Bar -->
+      <div class="control-panel-top">
+        <div class="location-bar">
+          <label for="user-location"><strong>Where is your location now?</strong></label>
+          <div class="input-group">
+            <input type="text" id="user-location" value="Butuan City" placeholder="e.g. Butuan City, Surigao City...">
+            <button id="update-location-btn" onclick="updateUserLocation()">Set Location</button>
+          </div>
+        </div>
+
+        <div class="search-bar">
+          <label for="search-input"><strong>Search Spots:</strong></label>
+          <input type="text" id="search-input" placeholder="Search by name or keyword..." oninput="handleSearch()">
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="filter-container">
+    <button class="filter-btn active" onclick="filterByCategory('All')">All Spots</button>
+    <button class="filter-btn" onclick="filterByCategory('Beaches & Islands')">Beaches & Islands</button>
+    <button class="filter-btn" onclick="filterByCategory('Waterfalls & Rivers')">Waterfalls & Rivers</button>
+    <button class="filter-btn" onclick="filterByCategory('Mountains & Nature')">Mountains & Nature</button>
+    <button class="filter-btn" onclick="filterByCategory('Heritage & Culture')">Heritage & Culture</button>
+  </nav>
+
+  <!-- Travel Info Panel -->
+  <div id="route-info-panel" class="route-panel hidden">
+    <div class="panel-header">
+      <h3 id="info-destination-title">Destination Info</h3>
+      <button onclick="closeRoutePanel()" class="close-btn">&times;</button>
+    </div>
+    <div class="panel-body">
+      <p><strong>From:</strong> <span id="info-origin">Butuan City</span></p>
+      <p><strong>Distance:</strong> <span id="info-distance">-- km</span></p>
+      
+      <!-- Transport Type Selector -->
+      <div class="mode-selector">
+        <label><strong>Transport Mode:</strong></label>
+        <select id="transport-mode" onchange="recalculateRouteDetails()">
+          <option value="private">Private Car / SUV</option>
+          <option value="public">Public Van / Bus</option>
+        </select>
+      </div>
+
+      <p><strong>Estimated Travel Time:</strong> <span id="info-travel-time">--</span></p>
+      <hr>
+      <h4>Estimated Expenses (Per Person / Group)</h4>
+      <p><strong>Entrance Fee:</strong> <span id="info-entrance-fee">--</span></p>
+      <p><strong>Estimated Transport Cost:</strong> <span id="info-transport-cost">--</span></p>
+      <p class="total-cost"><strong>Total Estimated Cost:</strong> <span id="info-total-cost">--</span></p>
+    </div>
+  </div>
+
+  <!-- Wishlist Floating Drawer -->
+  <div class="wishlist-fab" onclick="toggleWishlistDrawer()">
+    🎒 My Trip Itinerary (<span id="wishlist-count">0</span>)
+  </div>
+
+  <div id="wishlist-drawer" class="wishlist-drawer hidden">
+    <div class="drawer-header">
+      <h3>Your Trip Wishlist</h3>
+      <button onclick="toggleWishlistDrawer()" class="close-btn">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <div id="wishlist-items-container">
+        <p class="empty-msg">No destinations added yet. Click ❤️ on any card to add!</p>
+      </div>
+      <hr>
+      <div class="wishlist-summary">
+        <p><strong>Total Estimated Budget:</strong> <span id="wishlist-total-cost">₱0</span></p>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-layout">
+    <section class="map-section">
+      <div id="map"></div>
+    </section>
+
+    <section class="cards-section">
+      <div id="spots-container" class="spots-grid"></div>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="caraga-spots.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
